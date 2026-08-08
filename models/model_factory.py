@@ -1,4 +1,30 @@
+"""
+model_factory.py
+
+Defines the ModelFactory class, which creates concrete machine learning
+models based on a ModelType value.
+
+The factory centralises model creation so that the rest of the
+application does not need to know which Python class implements each
+model.
+
+Supported models include classification and regression algorithms.
+
+Creates:
+    RandomForestClassifierModel
+    LogisticRegressionClassifierModel
+    LinearRegressionModel
+    RandomForestRegressorModel
+
+Used by:
+    ExperimentRunner
+"""
+
+
+
+
 from models.model_type import ModelType
+from models.model import Model
 
 from models.classification.random_forest_classifier import (
     RandomForestClassifierModel
@@ -14,10 +40,11 @@ from models.regression.random_forest_regressor import RandomForestRegressorModel
 
 
 
+
 class ModelFactory:
 
     @staticmethod
-    def create(model_type):
+    def create(model_type: ModelType) -> Model:
 
         # Keep model creation in one place.
         # This means the rest of the application does not need to know

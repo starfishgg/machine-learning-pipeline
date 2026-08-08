@@ -1,3 +1,30 @@
+"""
+regression_evaluator.py
+
+Contains the evaluator used for regression machine learning
+problems.
+
+RegressionEvaluator calculates metrics that measure how close
+continuous predictions are to the actual values.
+
+Currently calculates:
+    - Mean Absolute Error (MAE)
+    - Root Mean Squared Error (RMSE)
+    - R² Score
+
+Input:
+    PredictionSet containing predicted and actual values.
+
+Output:
+    RegressionMetrics containing evaluation results.
+
+Implements:
+    Evaluator
+"""
+
+
+
+
 from sklearn.metrics import (
     mean_absolute_error,
     mean_squared_error,
@@ -7,17 +34,20 @@ from sklearn.metrics import (
 import numpy as np
 
 from evaluation.evaluator import Evaluator
-from results.regression_evaluation_result import RegressionEvaluationResult
+from evaluation.regression_metrics import RegressionMetrics
+from results.prediction_set import PredictionSet
+
+
 
 
 class RegressionEvaluator(Evaluator):
 
 
-    def evaluate(self, prediction_result):
+    def evaluate(self, prediction_set: PredictionSet) -> RegressionMetrics:
 
-        predictions = prediction_result.get_predictions()
+        predictions = prediction_set.get_predictions()
 
-        actuals = prediction_result.get_actuals()
+        actuals = prediction_set.get_actuals()
 
 
         mae = mean_absolute_error(
@@ -37,7 +67,7 @@ class RegressionEvaluator(Evaluator):
             predictions
         )
 
-        return RegressionEvaluationResult(
+        return RegressionMetrics(
             mae,
             rmse,
             r2

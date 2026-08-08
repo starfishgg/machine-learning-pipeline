@@ -1,16 +1,32 @@
+"""
+main.py
+
+Application entry point for the machine learning pipeline.
+
+Runs example experiments using supported datasets and models.
+Each experiment creates a dataset, runs multiple machine learning
+models through ExperimentRunner, and displays evaluation results.
+
+This file is responsible only for orchestrating experiments.
+The implementation details are handled by:
+    - datasets
+    - models
+    - pipeline
+    - evaluation
+"""
+
+
+
+
 from models.model_type import ModelType
 from datasets.titanic import TitanicDataset
 from datasets.california_housing import CaliforniaHousingDataset
-from models.model_factory import ModelFactory
-# from pipeline.pipeline import MachineLearningPipeline
 from pipeline.experiment_runner import ExperimentRunner
 
-from evaluation.classification_evaluator import ClassificationEvaluator
 
 
 
-
-def run_titanic():
+def run_titanic() -> dict[str, int]:
     print("=" * 50)
     print("TITANIC SURVIVAL")
     print("=" * 50)
@@ -22,35 +38,41 @@ def run_titanic():
         "data/titanic/train.csv"
     )
 
-    dataset.load()
-    dataset.preprocess()
-    dataset.validate()
-    dataset.describe()
+    # This is done by the ExperimentRunner now
+    # dataset.load()
+    # dataset.preprocess()
+    # dataset.validate()
+    # dataset.describe()
 
-    experiment = ExperimentRunner(
+    model_types = [
+        ModelType.LOGISTIC_REGRESSION_CLASSIFIER,
+        ModelType.RANDOM_FOREST_CLASSIFIER
+    ]
+
+    experiment_runner = ExperimentRunner(
         dataset,
-        [
-            ModelType.RANDOM_FOREST_CLASSIFIER,
-            ModelType.LOGISTIC_REGRESSION_CLASSIFIER
-        ]
+        model_types
     )
 
-    results = experiment.run()
+    results = experiment_runner.run()
     
     results.show_comparison()
     results.show_feature_analysis()
 
     results.compare_predictions(
-        ModelType.RANDOM_FOREST_CLASSIFIER,
-        ModelType.LOGISTIC_REGRESSION_CLASSIFIER
+        model_types[0],
+        model_types[1]
     )
 
-    return 1, 2
+    return {
+        "datasets_processed": 1,
+        "models_evaluated": 2
+    }
 
 
 
 
-def run_california_housing():
+def run_california_housing() -> dict[str, int]:
     print("=" * 50)
     print("CALIFORNIA HOUSING")
     print("=" * 50)
@@ -58,54 +80,70 @@ def run_california_housing():
 
     dataset = CaliforniaHousingDataset()
 
-    dataset.load()
-    dataset.preprocess()
-    dataset.validate()
-    dataset.describe()
+    # This is done by the ExperimentRunner now
+    # dataset.load()
+    # dataset.preprocess()
+    # dataset.validate()
+    # dataset.describe()
 
-    runner = ExperimentRunner(
+    model_types = [
+        ModelType.LINEAR_REGRESSION,
+        ModelType.RANDOM_FOREST_REGRESSOR
+    ]
+
+    experiment_runner = ExperimentRunner(
         dataset,
-        [
-            ModelType.LINEAR_REGRESSION,
-            ModelType.RANDOM_FOREST_REGRESSOR
-        ]
+        model_types
     )
 
-    results = runner.run()
+    results = experiment_runner.run()
 
     results.show_comparison()
     results.show_feature_analysis()
 
     results.compare_predictions(
-        ModelType.LINEAR_REGRESSION,
-        ModelType.RANDOM_FOREST_REGRESSOR
+        model_types[0],
+        model_types[1]
     )
 
-    return 1, 2
+    return {
+        "datasets_processed": 1,
+        "models_evaluated": 2
+    }
 
 
 
 
-def main():
-    datasets_processed = 0
-    models_evaluated = 0
+def main() -> None:
 
-    d, m = run_california_housing()
-    datasets_processed += d
-    models_evaluated += m
-    
-    d, m = run_titanic()
-    datasets_processed += d
-    models_evaluated += m
+    """
+    Runs all example machine learning experiments
+    """
+
+    statistics = {
+        "datasets_processed": 0,
+        "models_evaluated": 0
+    }
+
+    for experiment in [
+        run_california_housing(),
+        run_titanic()
+    ]:
+        statistics["datasets_processed"] += (
+            experiment["datasets_processed"]
+        )
+
+        statistics["models_evaluated"] += (
+            experiment["models_evaluated"]
+        )
 
     print("=" * 50)
     print("EXPERIMENT COMPLETE")
     print("=" * 50)
     print()
 
-    print(f"Datasets processed : {datasets_processed}")
-    print(f"Models evaluated   : {models_evaluated}")
-
+    print(f"Datasets processed : {statistics['datasets_processed']}")
+    print(f"Models evaluated   : {statistics['models_evaluated']}")
 
 
 
