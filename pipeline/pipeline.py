@@ -68,6 +68,11 @@ class MachineLearningPipeline:
         # Clean and transform the data ready for the model.
         self.dataset.preprocess()
 
+        #print("FEATURES:")
+        #print(self.dataset.get_feature_names())
+        #print(f"Feature count: {len(self.dataset.get_feature_names())}")
+        #print()
+
         # Make sure the dataset is ready before training
         self.dataset.validate()
 

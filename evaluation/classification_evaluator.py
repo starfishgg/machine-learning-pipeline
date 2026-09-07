@@ -26,12 +26,16 @@ Implements:
 
 from sklearn.metrics import (
     accuracy_score,
-    confusion_matrix
+    confusion_matrix,
+    precision_score,
+    recall_score,
+    f1_score
 )
 
 from evaluation.evaluator import Evaluator
 from evaluation.classification_metrics import ClassificationMetrics
 from results.prediction_set import PredictionSet
+
 
 
 
@@ -48,6 +52,24 @@ class ClassificationEvaluator(Evaluator):
             prediction_set.get_predictions()
         )
 
+        precision = precision_score(
+            prediction_set.get_actuals(),
+            prediction_set.get_predictions(),
+            zero_division=0
+        )
+
+        recall = recall_score(
+            prediction_set.get_actuals(),
+            prediction_set.get_predictions(),
+            zero_division=0
+        )
+
+        f1 = f1_score(
+            prediction_set.get_actuals(),
+            prediction_set.get_predictions(),
+            zero_division=0
+        )
+
         confusion_matrix_values = confusion_matrix(
             prediction_set.get_actuals(),
             prediction_set.get_predictions()
@@ -55,5 +77,8 @@ class ClassificationEvaluator(Evaluator):
 
         return ClassificationMetrics(
             accuracy,
+            precision,
+            recall,
+            f1,
             confusion_matrix_values
         )

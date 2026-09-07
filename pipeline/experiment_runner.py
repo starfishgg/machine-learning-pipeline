@@ -97,9 +97,13 @@ class ExperimentRunner:
                 prediction_set
             )
 
+        # The pipeline has now loaded and preprocessed the dataset,
+        # so these are the final feature names actually used by the model.
+        feature_names = pipeline.dataset.get_feature_names()
+
         # Combine all model results into an experiment result.
         return ExperimentResult(
             model_results,
-            self.dataset.get_feature_names()
+            feature_names
         )
     

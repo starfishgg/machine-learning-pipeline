@@ -59,8 +59,14 @@ class LogisticRegressionClassifierModel(Model):
             y_train
         )
 
+        #print("LOGISTIC COEF SHAPE:", self.model.coef_.shape)4
+
 
     def predict(self, X_test: pd.DataFrame) -> np.ndarray:
+        probabilities = self.model.predict_proba(X_test)
+
+        #print("MAX FRAUD PROBABILITY:", probabilities[:, 1].max())
+        #print("MEAN FRAUD PROBABILITY:", probabilities[:, 1].mean())
 
         # Predict the target values for data the model hasn't seen
         # during training.

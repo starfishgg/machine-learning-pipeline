@@ -34,10 +34,16 @@ class ClassificationMetrics:
     def __init__(
             self,
             accuracy_score: float,
+            precision: float,
+            recall: float,
+            f1: float,
             confusion_matrix_values: np.ndarray
     ) -> None:
         
         self.accuracy_score: float = accuracy_score
+        self.precision: float = precision
+        self.recall: float = recall
+        self.f1: float = f1
         self.confusion_matrix_values: np.ndarray = confusion_matrix_values
 
 
@@ -46,6 +52,9 @@ class ClassificationMetrics:
 
         return (
             f"Accuracy: {self.accuracy_score:.2%}\n\n"
+            f"Precision: {self.precision:.2%}\n\n"
+            f"Recall: {self.recall:.2%}\n\n"
+            f"F1 Score: {self.f1:.2%}\n\n"
             f"Confusion Matrix:\n"
             f"{self.confusion_matrix_values}"
         )
@@ -123,8 +132,17 @@ class ClassificationMetrics:
         print(
             f"Accuracy: {self.accuracy_score:.2%}"
         )
-
+        print(
+            f"Precision: {self.precision:.2%}"
+        )
+        print(
+            f"Recall: {self.recall:.2%}"
+        )
+        print(
+            f"F1 Score: {self.f1:.2%}"
+        )
         print()
+
         self.show_confusion_matrix()
         print()
         self.show_errors()

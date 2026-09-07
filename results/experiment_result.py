@@ -242,3 +242,6 @@ class ExperimentResult:
             for feature_name, value in features_with_values:
                 print(f"{feature_name}: {value:.4f}")
             print()
+
+        #print("FEATURE NAMES:", len(self.feature_names))
+        #print("FEATURE ANALYSIS:", len(feature_analysis))

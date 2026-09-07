@@ -6,6 +6,8 @@ The goal is to provide a reusable architecture for training, evaluating, and com
 
 Instead of creating separate one-off scripts for each dataset or model, the framework separates datasets, models, pipelines, evaluation, and experiment results into reusable components.
 
+NOTE: The Fraud Detection
+
 ---
 
 ## Features
@@ -21,6 +23,9 @@ Instead of creating separate one-off scripts for each dataset or model, the fram
 - Classification evaluation
   - Accuracy
   - Confusion matrix
+  - Precision
+  - Recall
+  - F1 score
   - Error analysis
   - Model agreement
 - Regression evaluation
@@ -80,13 +85,14 @@ The California Housing dataset is used to predict median house values from demog
 
 ## Project Structure
 
-```text
+```
 machine-learning-pipeline/
 │
 ├── data/
 │
 ├── datasets/
 │   ├── dataset.py
+│   ├── fraud.py
 │   ├── titanic.py
 │   └── california_housing.py
 │
@@ -132,7 +138,7 @@ machine-learning-pipeline/
 
 The framework follows a modular pipeline:
 
-```text
+```
 ExperimentRunner
 │
 ├── Create Model
@@ -223,112 +229,119 @@ Calculates performance metrics appropriate to the machine learning problem type.
 
 ## Example Output
 
-```text
+```
 ==================================================
-CALIFORNIA HOUSING
-==================================================
-
-MODEL COMPARISON
-----------------
-
-LINEAR_REGRESSION
-MAE: 0.533
-RMSE: 0.746
-R²: 0.576
-
-RANDOM_FOREST_REGRESSOR
-MAE: 0.328
-RMSE: 0.506
-R²: 0.805
-
-BEST MODEL
-----------
-RANDOM_FOREST_REGRESSOR
-
-FEATURE ANALYSIS
-----------------
-
-LINEAR_REGRESSION
-AveBedrms: 0.7831
-MedInc: 0.4487
-
-RANDOM_FOREST_REGRESSOR
-MedInc: 0.5250
-AveOccup: 0.1384
-
-MODEL PREDICTION DIFFERENCE
----------------------------
-
-Mean prediction difference: 0.383
-Maximum prediction difference: 9.119
-
-==================================================
-TITANIC SURVIVAL
+FRAUD DETECTION
 ==================================================
 
 MODEL COMPARISON
 ----------------
 
 LOGISTIC_REGRESSION_CLASSIFIER
-Accuracy: 81.01%
+Accuracy: 99.93%
+Precision: 91.18%
+Recall: 48.52%
+F1 Score: 63.34%
+
+CONFUSION MATRIX
+================
+
+                     Predicted
+                Negative   Positive
+Actual Negative   1270828          76
+Actual Positive    834         786
+
 
 ERROR ANALYSIS
 ==============
 
- True Negatives: 90
-False Positives: 15
-False Negatives: 19
- True Positives: 55
+ True Negatives: 1270828
+False Positives: 76
+False Negatives: 834
+ True Positives: 786
 
-The model correctly classified 145 of 179 samples.
+The model correctly classified 1271614 of 1272524 samples.
+
 
 RANDOM_FOREST_CLASSIFIER
-Accuracy: 81.01%
+Accuracy: 100.00%
+Precision: 100.00%
+Recall: 99.75%
+F1 Score: 99.88%
+
+CONFUSION MATRIX
+================
+
+                     Predicted
+                Negative   Positive
+Actual Negative   1270904           0
+Actual Positive      4        1616
+
 
 ERROR ANALYSIS
 ==============
 
- True Negatives: 88
-False Positives: 17
-False Negatives: 17
- True Positives: 57
+ True Negatives: 1270904
+False Positives: 0
+False Negatives: 4
+ True Positives: 1616
 
-The model correctly classified 145 of 179 samples.
+The model correctly classified 1272520 of 1272524 samples.
 
 
 BEST MODEL
 ----------
-Models performed equally:
-- LOGISTIC_REGRESSION_CLASSIFIER
-- RANDOM_FOREST_CLASSIFIER
+RANDOM_FOREST_CLASSIFIER
 
 FEATURE ANALYSIS
 ----------------
 
 LOGISTIC_REGRESSION_CLASSIFIER
-Sex: 2.5927
-Pclass: -0.9365
-SibSp: -0.2938
-Embarked_S: -0.2304
-Embarked_C: 0.1899
+type_PAYMENT: -5.7937
+type_CASH_OUT: -0.7619
+type_TRANSFER: 0.1160
+type_DEBIT: -0.1036
+type_CASH_IN: -0.0111
+step: 0.0054
+origin_balance_error: 0.0000
+origin_balance_change: 0.0000
+newbalanceOrig: -0.0000
+oldbalanceOrg: 0.0000
+destination_balance_change: -0.0000
+amount: -0.0000
+newbalanceDest: -0.0000
+oldbalanceDest: 0.0000
+destination_balance_error: 0.0000
 
 RANDOM_FOREST_CLASSIFIER
-Sex: 0.2796
-Fare: 0.2564
-Age: 0.2519
+newbalanceOrig: 0.2831
+origin_balance_change: 0.1965
+origin_balance_error: 0.1713
+newbalanceDest: 0.0672
+destination_balance_error: 0.0562
+destination_balance_change: 0.0498
+amount: 0.0416
+step: 0.0328
+type_TRANSFER: 0.0305
+oldbalanceOrg: 0.0293
+oldbalanceDest: 0.0266
+type_CASH_OUT: 0.0108
+type_PAYMENT: 0.0022
+type_CASH_IN: 0.0021
+type_DEBIT: 0.0001
 
 MODEL PREDICTION DIFFERENCE
 ---------------------------
 
-Same predictions: 155/179
-Different predictions: 24/179
+Same predictions: 1271618/1272524
+Different predictions: 906/1272524
 
 ==================================================
 EXPERIMENT COMPLETE
 ==================================================
 
-Datasets processed : 2
-Models evaluated   : 4
+Datasets processed : 1
+Models evaluated   : 2
 ```
 
 ---

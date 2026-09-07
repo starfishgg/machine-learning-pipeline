@@ -21,6 +21,7 @@ The implementation details are handled by:
 from models.model_type import ModelType
 from datasets.titanic import TitanicDataset
 from datasets.california_housing import CaliforniaHousingDataset
+from datasets.fraud import FraudDataset
 from pipeline.experiment_runner import ExperimentRunner
 
 
@@ -112,6 +113,43 @@ def run_california_housing() -> dict[str, int]:
     }
 
 
+def run_fraud() -> dict[str, int]:
+    print("=" * 50)
+    print("FRAUD DETECTION")
+    print("=" * 50)
+    print()
+
+    dataset = FraudDataset()
+    #dataset.load()
+    #dataset.preprocess()
+    #dataset.validate()
+    #dataset.describe()
+    
+    model_types = [
+        ModelType.LOGISTIC_REGRESSION_CLASSIFIER,
+        ModelType.RANDOM_FOREST_CLASSIFIER
+    ]
+
+    experiment_runner = ExperimentRunner(
+        dataset,
+        model_types
+    )
+
+    results = experiment_runner.run()
+
+    results.show_comparison()
+    results.show_feature_analysis()
+
+    results.compare_predictions(
+        model_types[0],
+        model_types[1]
+    )
+    
+    return {
+        "datasets_processed": 1,
+        "models_evaluated": 2
+    }
+
 
 
 def main() -> None:
@@ -126,8 +164,9 @@ def main() -> None:
     }
 
     for experiment in [
-        run_california_housing(),
-        run_titanic()
+        # run_california_housing(),
+        # run_titanic()
+        run_fraud()
     ]:
         statistics["datasets_processed"] += (
             experiment["datasets_processed"]
