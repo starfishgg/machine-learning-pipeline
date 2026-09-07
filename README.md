@@ -6,7 +6,12 @@ The goal is to provide a reusable architecture for training, evaluating, and com
 
 Instead of creating separate one-off scripts for each dataset or model, the framework separates datasets, models, pipelines, evaluation, and experiment results into reusable components.
 
-NOTE: The Fraud Detection
+##
+NOTE: The Fraud Detection Dataset must be downloaded separately as I feel it is too large for me to upload to github personally. You can download it yourself from: 
+
+https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset
+
+It is ~200MB zipped, and ~500MB raw. Running it though this pipeline project currently takes around 10-15 minutes (it contains around 6,000,000 records). The Random Forest Classifier model does get some incredible results though (see below).
 
 ---
 
@@ -40,6 +45,31 @@ NOTE: The Fraud Detection
 ---
 
 ## Current Datasets
+
+### Financial Fraud Detection
+
+**Problem type:** Classification
+
+Trying to predict which financial transactions are fraudulent based on previous data trends. Using the dataset at: https://www.kaggle.com/datasets/amanalisiddiqui/fraud-detection-dataset
+
+Be aware that this can take a long time to run (upwards of 10-15 minutes) as it is processing ~6,000,000 records. The performance of the Random Forest Classifier on this dataset is great, given the features we engineered.
+
+**Models:**
+
+- Logistic Regression
+- Random Forest Classifier
+
+**Analysis:**
+
+- Accuracy
+- Confusion matrix
+- Precision
+- Accuracy
+- F1
+- Classification error analysis
+- Feature analysis
+- Model prediction agreement
+
 
 ### Titanic Survival Prediction
 
